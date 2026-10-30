@@ -25,6 +25,78 @@ Technologies Used:
 7. CSS > User interface styling
 8. Bootstrap 5 > Responsive UI components
 9. TMDB API > Movie data retrieval
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+cd YOUR_REPOSITORY
+```
+
+Replace the placeholder URL with your repository's URL.
+
+### 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+Activate it:
+
+**Windows (PowerShell):**
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+**macOS / Linux:**
+```bash
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+If you have a `requirements.txt` file:
+
+```bash
+pip install -r requirements.txt
+```
+
+Otherwise, install the dependencies used in the app:
+
+```bash
+pip install flask flask-bootstrap flask-sqlalchemy flask-wtf wtforms python-dotenv requests
+```
+
+You can then generate a requirements file with `pip freeze > requirements.txt` after verifying your environment contains only the project's required packages.
+
+### 4. Configure the TMDB API key
+
+Get an API key from [TMDB](https://www.themoviedb.org/settings/api) and create a `.env` file in the project root:
+
+```dotenv
+MOVIE_DB_API_KEY=your_tmdb_api_key
+```
+
+The code uses `load_dotenv()` and reads `MOVIE_DB_API_KEY` from the environment.
+
+**Security note:** The shared version of `main.py` hardcodes Flask's `SECRET_KEY`. Before publishing or deploying, replace it with an environment variable, for example:
+
+```python
+app.config["SECRET_KEY"] = os.environ["FLASK_SECRET_KEY"]
+```
+
+Then add `FLASK_SECRET_KEY` to your private `.env` file.
+
+### 5. Run the app
+
+```bash
+python main.py
+```
+
+Open **http://127.0.0.1:5000/** in your browser.
+
+On startup, the app creates missing database tables with `db.create_all()`. A fresh database will initially have no saved movies.
 
 How it works:
 1. Movie discovery
