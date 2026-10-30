@@ -1,0 +1,4 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %}Add movie · CinemaVault{% endblock %}
+{% block content %}<section class="form-page"><div class="eyebrow">BUILD YOUR COLLECTION</div><h1>Find a film</h1><p>Search TMDB to add a movie to your collection.</p>{{ render_form(form) }}<a class="back-link" href="{{ url_for('home') }}">← Back to collection</a></section>{% endblock %}

@@ -1,0 +1,4 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %}Edit {{ movie.title }} · CinemaVault{% endblock %}
+{% block content %}<section class="form-page"><div class="eyebrow">YOUR MOVIE REVIEW</div><h1>{{ movie.title }}</h1><p>Rate this movie and adjust its genres (comma-separated).</p>{{ render_form(form) }}<a class="back-link" href="{{ url_for('home') }}">← Back to collection</a></section>{% endblock %}

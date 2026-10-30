@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Choose a movie · CinemaVault{% endblock %}
+{% block content %}<section class="form-page"><div class="eyebrow">SEARCH RESULTS</div><h1>Choose your film</h1>{% if options %}<div class="search-results">{% for movie in options %}<a href="{{ url_for('find_movie', id=movie.id) }}"><span>{{ movie.title }}</span><small>{{ movie.release_date or 'Year unknown' }}</small></a>{% endfor %}</div>{% else %}<p>No films found. Try another title.</p>{% endif %}<a class="back-link" href="{{ url_for('add_movie') }}">← Search again</a></section>{% endblock %}

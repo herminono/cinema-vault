@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}My collection · CinemaVault{% endblock %}
+{% block content %}
+<header class="hero"><div class="eyebrow">THE CINEMAVAULT COLLECTION</div><h1>Films worth <em>keeping.</em></h1><p>Your personal record of films you love, rated, and collected here.</p></header>
+<hr class="program-rule">
+<section class="filter-panel" aria-label="Movie filters">
+  <h2 class="filter-panel-title">Find your next favorite</h2>
+  <form method="get" action="{{ url_for('home') }}" class="filter-form">
+    <label>Genre<select name="genre"><option value="">All genres</option>{% for genre in genres %}<option value="{{ genre }}" {% if genre == selected_genre %}selected{% endif %}>{{ genre }}</option>{% endfor %}</select></label>
+    <label>Min rating<input type="number" name="min_rating" min="0" max="10" step="0.1" placeholder="0.0" value="{{ min_rating }}"></label>
+    <label>Max rating<input type="number" name="max_rating" min="0" max="10" step="0.1" placeholder="10.0" value="{{ max_rating }}"></label>
+    <button class="primary-btn" type="submit">Apply filters</button><a class="clear-btn" href="{{ url_for('home') }}">Clear</a>
+  </form>
+  {% if error %}<p class="filter-error" role="alert">{{ error }}</p>{% endif %}
+</section>
+<div class="section-head"><h2>The collection</h2><span>{{ movies|length }} of {{ total }} films, sorted by rating</span></div>
+{% if movies %}
+<section class="movie-grid">
+  {% for movie in movies %}
+  <article class="movie-card">
+    <div class="poster-wrap">
+      {% if movie.img_url %}<img class="poster" src="{{ movie.img_url }}" alt="Poster for {{ movie.title }}" loading="lazy">{% else %}<div class="poster-placeholder">No poster available</div>{% endif %}
+      <span class="rank-badge">#{{ movie.display_rank }}</span>
+    </div>
+    <div class="movie-body">
+      <div class="card-top"><h3>{{ movie.title }}</h3><span class="year">{{ movie.year }}</span></div>
+      <div class="genres">{{ movie.genre or 'Genre not set' }}</div>
+      <div class="score">★ <strong>{{ '%.1f'|format(movie.rating) if movie.rating is not none else 'Unrated' }}</strong><small>{% if movie.rating is not none %}/ 10{% endif %}</small></div>
+      {% if movie.review %}<p class="review">“{{ movie.review }}”</p>{% elif movie.description %}<p class="review overview">{{ movie.description }}</p>{% endif %}
+      <div class="card-actions"><a class="edit-link" href="{{ url_for('rate_movie', id=movie.id) }}">Edit review</a>
+      <form method="post" action="{{ url_for('delete_movie') }}" onsubmit="return confirm('Delete this film from your collection?');">{{ delete_form.hidden_tag() }}<input type="hidden" name="id" value="{{ movie.id }}"><button class="delete-link" type="submit">Delete</button></form></div>
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% else %}<div class="empty-state"><h3>No movies found</h3><p>Try a different genre or rating interval, or add a new movie.</p><a class="primary-btn" href="{{ url_for('home') }}">Show all movies</a></div>{% endif %}
+{% endblock %}
